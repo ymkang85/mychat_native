@@ -4,7 +4,7 @@ import colors from "../colors"
 import { SafeAreaView } from 'react-native';
 const backImage = require('../assets/logo.png');
 //그림자는 react-native-shadow-2
-const Login = () => {
+const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     return (
@@ -12,7 +12,7 @@ const Login = () => {
             <View style={styles.container}>
                 <Image source={backImage} style={styles.backImage} />
                 <SafeAreaView>
-                    <Text style={styles.title}>회원 로그인</Text>
+                    <Text style={styles.title}>회원 가입</Text>
                     <TextInput
                         style={styles.input}
                         placeholder='이메일'
@@ -34,11 +34,11 @@ const Login = () => {
                         onChangeText={(text) => setPassword(text)}
                     />
                     <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>로그인</Text>
+                        <Text style={styles.buttonText}>회원가입</Text>
                     </TouchableOpacity>
                     <View style={styles.joinView}>
                         <TouchableOpacity>
-                            <Text style={styles.joinText}>회원가입</Text>
+                            <Text style={styles.joinText}>회원 로그인</Text>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Login
+export default Signup
