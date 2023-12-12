@@ -1,43 +1,63 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import {
+    View,
+    SafeAreaView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Image,
+    Alert,
+    StyleSheet
+} from 'react-native';
+import { auth } from '../config'
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import colors from "../colors"
-import { SafeAreaView } from 'react-native';
-const backImage = require('../assets/logo.png');
+const backImage = require("../assets/background.jpg");
 //그림자는 react-native-shadow-2
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login = ({ navigation }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const onPress = () => {
+        if (email !== '' && password !== '') {
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => console.log("로그인성공"))
+                .catch((err) => Alert.alert("Login error", err.message));
+        }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
                 <Image source={backImage} style={styles.backImage} />
-                <SafeAreaView>
+                <SafeAreaView style={styles.bgColorSheet}>
                     <Text style={styles.title}>회원 로그인</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder='이메일'
-                        autoCapitalize='none'
-                        keyboardType='email-address'
-                        textContentType='emailAddress'
+                        placeholder="이메일"
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        textContentType="emailAddress"
                         autoFocus={true}
                         value={email}
                         onChangeText={(text) => setEmail(text)}
                     />
-                    <TextInput
-                        style={styles.input}
-                        placeholder='비밀번호'
-                        autoCapitalize='none'
+                    <TextInput style={styles.input}
+                        placeholder="비밀번호"
+                        autoCapitalize="none"
                         autoCorrect={false}
                         secureTextEntry={true}
-                        textContentType='password'// 비밀번호를 *로 찍히게 함.
+                        textContentType="password"
                         value={password}
                         onChangeText={(text) => setPassword(text)}
                     />
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={onPress}>
                         <Text style={styles.buttonText}>로그인</Text>
                     </TouchableOpacity>
                     <View style={styles.joinView}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                             <Text style={styles.joinText}>회원가입</Text>
                         </TouchableOpacity>
                     </View>
@@ -46,7 +66,6 @@ const Login = () => {
         </TouchableWithoutFeedback>
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -62,9 +81,9 @@ const styles = StyleSheet.create({
     backImage: {
         width: "100%",
         height: 340,
-        position: 'absolute',
+        position: "absolute",
         top: 0,
-        resizeMode: 'cover'
+        resizeMode: "cover"
     },
     bgColorSheet: {
         width: '100%',
@@ -74,9 +93,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.bGround,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
-        ...platform.select({
+        ...Platform.select({
             ios: {
-                shadowColor: 'rgb(',
+                shadowColor: "rgb(50,50,50)",
                 shadowOpacity: 0.5,
                 shadowRadius: 5,
                 shadowOffset: {
@@ -106,22 +125,21 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#f57c00',
         height: 58,
-        backgroundRadius: 10,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
         marginHorizontal: 60
     },
-    joinView:{
-        marginTop:20,
-        alignItems:'flex-end',
-        marginRight:60
+    joinView: {
+        marginTop: 20,
+        alignItems: 'flex-end',
+        marginRight: 60
     },
-    joinText:{
-        color:"#f57c00",
-        fontWeight:600,
-        fontSize:15
+    joinText: {
+        color: "#f57c00",
+        fontWeight: '600',
+        fontSize: 16
     }
-})
-
+});
 export default Login

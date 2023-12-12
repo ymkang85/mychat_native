@@ -1,46 +1,50 @@
 import React, { useEffect } from 'react'
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { FontAwesome, Entypo } from '@expo/vector-icons'
-import LogoImage from '../assets/logo.png'
-import colors from '../colors'
+import { View, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesome, Entypo } from '@expo/vector-icons'
+import colors from '../colors'
+const useImage = require("../assets/user.jpg");
 
 const Home = () => {
-    const nav = useNavigation();
-
+    const navigation = useNavigation();
     useEffect(() => {
-        nav.setOptions({
+        navigation.setOptions({
             headerLeft: () => (
-                <FontAwesome name='search' size={25} color={colors.gray} style={{ marginLeft: 15 }} />
+                <FontAwesome name="search"
+                    size={25}
+                    color={colors.gray}
+                    style={{ marginLeft: 20 }}
+                />
             ),
             headerRight: () => (
-                <Image source={LogoImage} style={{
-                    width: '100%',
-                    height: 'auto'
-                }}
-                    onProgress={() => nav.navigate('Chat')}
+                <Image
+                    source={useImage}
+                    style={{
+                        width: 50,
+                        height: 50,
+                        marginRight: 20
+                    }}
                 />
             )
         });
-    }, [nav])
-
+    }, [navigation])
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.chatButton}>
-                <Entypo name="chat" size={30} color={colors.lightGray} />
+            <TouchableOpacity
+                style={styles.chatButton}>
+                <Entypo name="chat" size={28} color={colors.lightGray} />
             </TouchableOpacity>
         </View>
     )
 }
 
 export default Home
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        backgroundColor: colors.bGround
+        backgroundColor: '#fff'
     },
     chatButton: {
         backgroundColor: colors.primary,
@@ -49,13 +53,20 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: colors.primary,
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: .9,
-        shadowRadius: 8,
+        ...Platform.select({
+            iso: {
+                shadowColor: colors.primary,
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: .9,
+                shadowRadius: 8,
+            },
+            android: {
+                elevation: 3
+            }
+        }),
         marginRight: 20,
         marginBottom: 50
     }

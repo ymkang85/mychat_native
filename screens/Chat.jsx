@@ -1,11 +1,10 @@
-import React, {useState, useLayoutEffect, useEffect, useCallback} from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import React from 'react'
+import { View } from 'react-native'
 
 const Chat = () => {
-    const [message, setMessage] = useState();
-    return (
-        <div>Chat</div>
-    )
+  return (
+    <View>Chat</View>
+  )
 }
 
 export default Chat
