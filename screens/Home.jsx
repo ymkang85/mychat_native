@@ -1,12 +1,22 @@
 import React, { useEffect } from 'react'
-import { View, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { FontAwesome, Entypo } from '@expo/vector-icons'
+import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons'
 import colors from '../colors'
+import { auth } from '../config'
+import { signOut } from 'firebase/auth';
 const useImage = require("../assets/user.jpg");
 
 const Home = () => {
     const navigation = useNavigation();
+
+    const logout = () => {
+        signOut(auth).then(() => console.log('로그아웃됨'))
+            .catch((err) => {
+                console.error(err);
+            })
+    }
+
     useEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -17,20 +27,33 @@ const Home = () => {
                 />
             ),
             headerRight: () => (
-                <Image
-                    source={useImage}
-                    style={{
-                        width: 50,
-                        height: 50,
-                        marginRight: 20
-                    }}
-                />
+                <View style={{
+                    flexDirection: 'row',
+                    width: '50%',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity onPress={logout}>
+                        <AntDesign name="logout" size={25} color={colors.gray}
+                            style={{ marginRight: 10 }}
+                        />
+                    </TouchableOpacity>
+                    <Image
+                        source={useImage}
+                        style={{
+                            width: 50,
+                            height: 50,
+                            marginRight: 20
+                        }}
+                    />
+                </View>
             )
         });
     }, [navigation])
     return (
         <View style={styles.container}>
             <TouchableOpacity
+                onPress={() => navigation.navigate("Chat")}
                 style={styles.chatButton}>
                 <Entypo name="chat" size={28} color={colors.lightGray} />
             </TouchableOpacity>
